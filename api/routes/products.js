@@ -141,7 +141,7 @@ router.post('/:id',(req , res , next) =>{
         
     };
 
-    var q ={};
+    var t ={};
     var w;
     console.log(name.name[1]);
     const ba = "เชียงใหม่" ;
@@ -149,9 +149,9 @@ router.post('/:id',(req , res , next) =>{
         for(var i=0 ;i<name.name.length ;i++)
         {        
             db.collection('test').findOne({ Province:name.name[i] }, function(err, docs) {
-            q={q,docs};
+            t={t,docs};
             //absorb(q,docs);
-            console.log(q);
+            console.log(t);
             
         });
         /*res.status(200).json({
@@ -160,7 +160,7 @@ router.post('/:id',(req , res , next) =>{
         }
     db.close    
     });
-    res.json(q);
+    res.json(t);
     /*res.status(200).json({
         message : 'Get Product /:ProId = '+id
     });*/
