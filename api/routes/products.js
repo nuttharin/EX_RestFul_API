@@ -3,7 +3,8 @@ const router = express.Router()
 const request = require('request');
 const ajax = require('ajax');
 const axios = require('axios');
-
+const merge = require('merge');
+const absorb = require('absorb');
 
 const MongoClient = require('mongodb').MongoClient
 const url = "mongodb://localhost:27017/test"
@@ -133,14 +134,76 @@ router.get('/one',(req , res , next) =>{
 
 });
 
-router.get('/:ProId',(req , res , next) =>{
-    const id = req.params.ProId;
-    res.status(200).json({
-        message : 'Get Product /:ProId = '+id
+router.post('/:id',(req , res , next) =>{
+    var id = req.params.id;
+    var name = {
+        name: req.body.name
+        
+    };
+
+    var q ={};
+    var w;
+    console.log(name.name[1]);
+    const ba = "เชียงใหม่" ;
+    MongoClient.connect(url,function (err , db){
+        for(var i=0 ;i<name.name.length ;i++)
+        {        
+            db.collection('test').findOne({ Province:name.name[i] }, function(err, docs) {
+            q={q,docs};
+            //absorb(q,docs);
+            console.log(q);
+            
+        });
+        /*res.status(200).json({
+            message : 'Get Product /:Id = '+id
+        });*/
+        }
+    db.close    
     });
+    res.json(q);
+    /*res.status(200).json({
+        message : 'Get Product /:ProId = '+id
+    });*/
 
 });
 
 
+router.post('/column/:id',(req , res , next) =>{
+    var name = {
+        name: req.body.name
+    };
+    var id = req.params.id;
+    //console.log(name.name[0]);
+    var x="";
+    for(var i=0 ;i<name.name.length ;i++)
+        { 
+            /*if(x=="")
+            {
+                x+=name.name[i]+":1";
+            }
+            else
+            {
+                x+=","+name.name[i]+":1";
+            }*/
+            x= "1" ;
+            
+        }
+        console.log(x);
+        MongoClient.connect(url,function (err , db){
+            //console.log(x);
+        db.collection('test').find({}, {Province:x}).toArray(function(err, docs) {
+            //console.log(docs);
+            res.json(docs);
+        });
+        /*res.status(200).json({
+            message : 'Get Column /: = '+id
+        });*/
+    db.close    
+    });
+    /*res.status(200).json({
+        message : 'Get Product /:ProId = '+id
+    });*/
+
+});
 
 module.exports = router;
