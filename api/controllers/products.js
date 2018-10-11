@@ -96,7 +96,7 @@ exports.products_find_rows = (req, res, next) =>{
     }
     //console.log(query);
     MongoClient.connect(url ,function (err , db){
-        db.collection('test').find({StationNameTh :{ $in : query} }).toArray(function(err, docs) {
+        db.collection('test').find({Province :{ $in : query} }).toArray(function(err, docs) {
             res.json(docs);
         });
     });
